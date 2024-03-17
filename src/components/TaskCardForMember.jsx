@@ -4,6 +4,7 @@ import CommentModal from "./CommentModal";
 import FileModal from "./FileModal";
 import CommentList from "./CommentList";
 import FileList from "./FileList";
+import ProgressBar from "./ProgressBar";
 
 
 export default function TaskCardForMember(props) {
@@ -12,6 +13,7 @@ export default function TaskCardForMember(props) {
   const [taskId, setTaskId] = useState(null);
   const [project, setProject] = useState(props.project);
   const [inputKey, setInputKey] = useState(0);
+  const [sortBy, setSortBy] = useState("id");
   const { status } = props;
   let tasks;
   if (status === "all") {
@@ -47,6 +49,16 @@ export default function TaskCardForMember(props) {
     setFile(null);
     setTaskId(null);
   };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  if (sortBy === "title") {
+    tasks.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortBy === "id") {
+    tasks.sort((a, b) => a.id - b.id);
+  }
 
   function handleConfirmComment() {
     if (comment.trim() !== "") {
@@ -104,8 +116,24 @@ export default function TaskCardForMember(props) {
   }
 
 
+
+  const totalTasksInPage = tasks.length;
+  const totalUncompletedTasks = status === "all" ? tasks.filter(task => !task.status.status).length : null;
+  const completionPercentage = totalTasksInPage > 0 ? ((totalTasksInPage - totalUncompletedTasks) / totalTasksInPage) * 100 : 0;
+
   return (
     <div className="container">
+
+      <div className="mb-3">
+        <label htmlFor="sortSelect" className="form-label">Sort by:</label>
+        <select className="form-select" id="sortSelect" value={sortBy} onChange={handleSortChange}>
+          <option value="id">Creation time</option>
+          <option value="title">Title</option>
+        </select>
+      </div>
+
+      <ProgressBar totalTasksInPage={totalTasksInPage} totalUncompletedTasks={totalUncompletedTasks} completionPercentage={completionPercentage}/>
+
       <div className="row">
         {tasks.length === 0 ? (
           <div className="col alert alert-info" role="alert">
