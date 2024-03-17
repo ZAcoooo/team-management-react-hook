@@ -1,4 +1,4 @@
-export default function Task({id = "", title, startDate, endDate, description, comments = [], members = []} = {}) {
+export default function Task({id = "", title, startDate, endDate, description, comments = [], members = [], files = []} = {}) {
   const me = {};
   me.id = id;
   me.title = title;
@@ -8,5 +8,6 @@ export default function Task({id = "", title, startDate, endDate, description, c
   me.comments = comments;
   me.members = members;
   me.status = false;
+  me.files = files;
   return me;
 }

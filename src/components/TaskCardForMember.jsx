@@ -7,6 +7,7 @@ export default function TaskCardForMember(props) {
   const [comment, setComment] = useState("");
   const [taskId, setTaskId] = useState(null);
   const [showCommentPopup, setShowCommentPopup] = useState(false);
+  const [showFileUploadPopup, setShowFileUploadPopup] = useState(false);
   const [project, setProject] = useState(props.project);
   const tasks = project.getTasks();
 
@@ -53,6 +54,14 @@ export default function TaskCardForMember(props) {
     }
   }
 
+  function handleOpenFileUploadPopup() {
+    setShowFileUploadPopup(true);
+  }
+
+  function handleCloseFileUploadPopup() {
+    setShowFileUploadPopup(false);
+  }
+
   return (
     <div>
       {tasks.length === 0 ? (
@@ -91,10 +100,37 @@ export default function TaskCardForMember(props) {
               {!task.status && (
                 <button onClick={() => handleMarkCompleted(task.id)} className="btn btn-success">Mark as Completed</button>
               )}
+              <button onClick={handleOpenFileUploadPopup} className="btn btn-primary">Upload File</button>
             </div>
           </div>
         ))
       )}
+      <Popup trigger={<button> Trigger</button>} position="right center">
+        <div>Popup content here !!</div>
+      </Popup>
+      {/* <Popup
+        open={showFileUploadPopup}
+        closeOnDocumentClick={false}
+        onClose={handleCloseFileUploadPopup}
+      >
+        <div className="popup">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Upload File</h5>
+                <button type="button" className="btn-close" onClick={handleCloseFileUploadPopup}></button>
+              </div>
+              <div className="modal-body">
+                <input type="file" className="form-control" />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={handleCloseFileUploadPopup}>Close</button>
+                <button type="button" className="btn btn-primary">Upload</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Popup> */}
       <Popup
         open={showCommentPopup}
         closeOnDocumentClick={false}
