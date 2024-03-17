@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 
 export default function TaskCardForLeader(props) {
   const [project, setProject] = useState(props.project);
-  const tasks = project.getTasks();
+  const { status } = props;
+  let tasks;
+  if (status === "all") {
+    tasks = project.getTasks();
+  } else if (status === "uncompleted") {
+    tasks = project.getUncompletedTasks();
+  } else {
+    tasks = project.getCompletedTasks();
+  }
 
   function handleDeleteTask(taskId) {
     const confirmDelete = window.confirm("Are you sure you want to delete this task?");
@@ -43,8 +51,8 @@ export default function TaskCardForLeader(props) {
                 </ul>
               </div>
               <p className="card-text">Status: 
-                <span style={{fontWeight: "bold", color: task.status ? "green" : "red"}}>
-                  {task.status ? " Completed" : " Uncompleted"}
+                <span style={{fontWeight: "bold", color: task.status.status ? "green" : "red"}}>
+                  {task.status.status ? ` Completed - ${new Date(task.status.date).toLocaleString()}` : " Uncompleted"}
                 </span>
               </p>  
               <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger">Delete Task</button>           
@@ -57,9 +65,7 @@ export default function TaskCardForLeader(props) {
 }
 
 TaskCardForLeader.propTypes = {
-  project: PropTypes.shape({
-    getTasks: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired,
-  }).isRequired,
+  project: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
 };
 

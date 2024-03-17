@@ -43,6 +43,14 @@ export default function Project({name = "Test Project",
     return tasks || [];
   }
 
+  function getCompletedTasks() {
+    return tasks.filter(task => task.status.status === true) || [];
+  }
+
+  function getUncompletedTasks() {
+    return tasks.filter(task => task.status.status === false) || [];
+  }
+
   function getTaskById(id) {
     return tasks.find(task => task.id == id);
   }
@@ -91,6 +99,8 @@ export default function Project({name = "Test Project",
   me.getMembers = getMembers;
   me.createTask = createTask;
   me.getTasks = getTasks;
+  me.getCompletedTasks = getCompletedTasks;
+  me.getUncompletedTasks = getUncompletedTasks;
   me.getTaskById = getTaskById;
   me.addCommentToTask = addCommentToTask;
   me.markTaskAsCompleted = markTaskAsCompleted;

@@ -12,13 +12,19 @@ export default function LeaderProjectNavBar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/Leader" style={{ fontSize: "20px" }}>Leader Home</Link>
+              <Link className="nav-link active" aria-current="page" to="/Leader" style={{ fontSize: "17px" }}>Leader Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/Leader/Project" style={{ fontSize: "20px" }}>View Tasks</Link>
+              <Link className="nav-link active" aria-current="page" to="/Leader/Project" style={{ fontSize: "17px" }}>All Tasks</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/Leader/Project/CreateTask" style={{ fontSize: "20px" }}>Create Task</Link>
+              <Link className="nav-link active" aria-current="page" to="/Leader/Project/Uncompleted" style={{ fontSize: "17px" }}>Uncompleted Tasks</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link active" aria-current="page" to="/Leader/Project/Completed" style={{ fontSize: "17px" }}>Completed Tasks</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link active" aria-current="page" to="/Leader/Project/CreateTask" style={{ fontSize: "17px" }}>Create Task</Link>
             </li>
           </ul>
         </div>
