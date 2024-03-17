@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from "react";
-import Popup from "reactjs-popup";
 import PropTypes from "prop-types";
 
 
 export default function TaskCardForMember(props) {
   const [comment, setComment] = useState("");
   const [taskId, setTaskId] = useState(null);
-  const [showCommentPopup, setShowCommentPopup] = useState(false);
-  const [showFileUploadPopup, setShowFileUploadPopup] = useState(false);
   const [project, setProject] = useState(props.project);
   const tasks = project.getTasks();
 
@@ -17,7 +14,6 @@ export default function TaskCardForMember(props) {
 
   function handleAddComment(id) {
     setTaskId(id);
-    setShowCommentPopup(true);
   };
 
   function handleCommentChange(event) {
@@ -27,7 +23,6 @@ export default function TaskCardForMember(props) {
   function handleCancelComment() {
     setComment("");
     setTaskId(null);
-    setShowCommentPopup(false);
   };
 
   function handleConfirmComment() {
@@ -54,13 +49,6 @@ export default function TaskCardForMember(props) {
     }
   }
 
-  function handleOpenFileUploadPopup() {
-    setShowFileUploadPopup(true);
-  }
-
-  function handleCloseFileUploadPopup() {
-    setShowFileUploadPopup(false);
-  }
 
   return (
     <div>
@@ -85,7 +73,9 @@ export default function TaskCardForMember(props) {
                       <div>
                         <strong>{comment.getName()}</strong> - {new Date(comment.getDate()).toLocaleString()}:
                       </div>
-                      <div>{comment.getContent()}</div>
+                      <div style={{ whiteSpace: "pre-line" }}>
+                        {comment.getContent()}
+                      </div>
                       <button className="btn btn-outline-danger" onClick={() => handleDeleteComment(task.id, comment.getId())}>Delete</button>
                     </li>
                   ))}
@@ -96,52 +86,74 @@ export default function TaskCardForMember(props) {
                   {task.status ? " Completed" : " Uncompleted"}
                 </span>
               </p>
-              <button onClick={() => handleAddComment(task.id)} className="btn btn-primary">Add Comment</button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#commentModal"
+                onClick={() => handleAddComment(task.id)}
+              >
+                Add Comment
+              </button>
               {!task.status && (
                 <button onClick={() => handleMarkCompleted(task.id)} className="btn btn-success">Mark as Completed</button>
               )}
-              <button onClick={handleOpenFileUploadPopup} className="btn btn-primary">Upload File</button>
+              
             </div>
           </div>
         ))
       )}
-      <Popup trigger={<button> Trigger</button>} position="right center">
-        <div>Popup content here !!</div>
-      </Popup>
-      {/* <Popup
-        open={showFileUploadPopup}
-        closeOnDocumentClick={false}
-        onClose={handleCloseFileUploadPopup}
+      <div
+        className="modal fade"
+        id="commentModal"
+        tabIndex={-1}
+        role="dialog"
+        aria-labelledby="commentModalCenterTitle"
+        aria-hidden="true"
       >
-        <div className="popup">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Upload File</h5>
-                <button type="button" className="btn-close" onClick={handleCloseFileUploadPopup}></button>
-              </div>
-              <div className="modal-body">
-                <input type="file" className="form-control" />
-              </div>
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="commentModalLongTitle">
+                  Comment
+              </h5>
+              <button
+                type="button"
+                className="btn btn-outline-dark btn-sm"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <textarea 
+                className="form-control" 
+                rows="3" 
+                value={comment} 
+                onChange={handleCommentChange}
+                placeholder="Enter your comment"></textarea>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={handleCloseFileUploadPopup}>Close</button>
-                <button type="button" className="btn btn-primary">Upload</button>
+                <button 
+                  type="button" 
+                  className="btn btn-outline-success" 
+                  onClick={handleConfirmComment} 
+                  data-bs-dismiss="modal">
+                  Confirm
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  onClick={handleCancelComment}
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </Popup> */}
-      <Popup
-        open={showCommentPopup}
-        closeOnDocumentClick={false}
-        onClose={handleCancelComment}
-      >
-        <div className="popup">
-          <textarea value={comment} onChange={handleCommentChange} />
-          <button className="btn btn-outline-success" onClick={handleConfirmComment}>Confirm</button>
-          <button className="btn btn-outline-danger" onClick={handleCancelComment}>Cancel</button>
-        </div>
-      </Popup>
+      </div>
     </div>
   );
 }
