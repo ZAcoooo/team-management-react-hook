@@ -18,10 +18,10 @@ export default function MemberProjectNavBar() {
               <Link className="nav-link active" aria-current="page" to="/Member/Project" style={{ fontSize: "17px" }}>All Tasks</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="" style={{ fontSize: "17px" }}>Uncompleted Tasks</Link>
+              <Link className="nav-link active" aria-current="page" to="/Member/Project/Uncompleted" style={{ fontSize: "17px" }}>Uncompleted Tasks</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="" style={{ fontSize: "17px" }}>Completed Tasks</Link>
+              <Link className="nav-link active" aria-current="page" to="/Member/Project/Completed" style={{ fontSize: "17px" }}>Completed Tasks</Link>
             </li>
           </ul>
         </div>

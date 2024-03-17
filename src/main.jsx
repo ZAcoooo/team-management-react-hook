@@ -7,6 +7,8 @@ import LeaderProjectPage from "./pages/LeaderProjectPage.jsx";
 import LeaderProjectCompletedPage from "./pages/LeaderProjectCompletedPage.jsx";
 import LeaderProjectUncompletedPage from "./pages/LeaderProjectUncompletedPage.jsx";
 import MemberProjectPage from "./pages/MemberProjectPage.jsx";
+import MemberProjectCompletedPage from "./pages/MemberProjectCompletedPage.jsx";
+import MemberProjectUncompletedPage from "./pages/MemberProjectUncompletedPage.jsx";
 import CreateTaskPage from "./pages/CreateTaskPage.jsx";
 import Project from "./model/Project.js";
 
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
   {
     path: "/Leader",
     element: <LeaderHome project={globalProject}/>,
+  },
+  {
+    path: "/Member/Project/Uncompleted",
+    element: <MemberProjectUncompletedPage project={globalProject}/>,
+  },
+  {
+    path: "/Member/Project/Completed",
+    element: <MemberProjectCompletedPage project={globalProject}/>,
   },
   {
     path: "/Member/Project",

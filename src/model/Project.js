@@ -65,6 +65,15 @@ export default function Project({name = "Test Project",
     return false;
   }
 
+  function uploadFileToTask(taskId, fileData) {
+    const task = getTaskById(taskId);
+    if (task) {
+      task.files.push(fileData);
+      return true;
+    }
+    return false;
+  }
+
   function markTaskAsCompleted(taskId) {
     const task = getTaskById(taskId);
     if (task) {
@@ -94,6 +103,16 @@ export default function Project({name = "Test Project",
     return false;
   }
 
+  function deleteFileFromTask(taskId, fileData) {
+    const task = getTaskById(taskId);
+    const index = task.files.findIndex(file => file === fileData);
+    if (index !== -1) {
+      task.files.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
   me.getName = getName;
   me.getDescription = getDescription;
   me.getMembers = getMembers;
@@ -103,8 +122,10 @@ export default function Project({name = "Test Project",
   me.getUncompletedTasks = getUncompletedTasks;
   me.getTaskById = getTaskById;
   me.addCommentToTask = addCommentToTask;
+  me.uploadFileToTask = uploadFileToTask;
   me.markTaskAsCompleted = markTaskAsCompleted;
   me.deleteTask = deleteTask;
+  me.deleteFileFromTask = deleteFileFromTask;
   me.deleteCommentFromTask = deleteCommentFromTask;
   return me;
 }

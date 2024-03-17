@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import CommentList from "./CommentList";
+import FileList from "./FileList";
+
 
 export default function TaskCardForLeader(props) {
   const [project, setProject] = useState(props.project);
@@ -21,7 +24,15 @@ export default function TaskCardForLeader(props) {
       setProject(updatedProject);
     }
   };
-
+  function handleFileDownload(downloadFile) {
+    const downloadUrl = URL.createObjectURL(downloadFile);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.setAttribute("download", downloadFile.name);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
   return (
     <div>
       {tasks.length === 0 ? (
@@ -37,19 +48,8 @@ export default function TaskCardForLeader(props) {
               <p className="card-text">End Date: {task.endDate}</p>
               <p className="card-text">Description: {task.description}</p>
               <p className="card-text">Assigned Members: {task.members.join(", ")}</p>
-              <div>
-                <p className="card-text">Comments:</p>
-                <ul>
-                  {task.comments.map((comment, index) => (
-                    <li key={index}>
-                      <div>
-                        <strong>{comment.getName()}</strong> - {new Date(comment.getDate()).toLocaleString()}:
-                      </div>
-                      <div>{comment.getContent()}</div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <CommentList comments={task.comments} />
+              <FileList files={task.files} handleFileDownload={handleFileDownload}/>
               <p className="card-text">Status: 
                 <span style={{fontWeight: "bold", color: task.status.status ? "green" : "red"}}>
                   {task.status.status ? ` Completed - ${new Date(task.status.date).toLocaleString()}` : " Uncompleted"}

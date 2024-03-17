@@ -1,31 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default function CommentModal({ taskId, handleCurrentTask, comment, handleCommentChange, handleConfirmComment, handleCancelComment }) {
+export default function FileModal({ taskId, handleCurrentTask, handleFileChange, handleFileUpload, handleCancelFile, inputKey }) {
   return (
     <>
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target="#commentModal"
+        data-bs-target="#fileModal"
         onClick={() => handleCurrentTask(taskId)}
       >
-                Add Comment
+            Upload File
       </button>
+        
       <div
         className="modal fade"
-        id="commentModal"
+        id="fileModal"
         tabIndex={-1}
         role="dialog"
-        aria-labelledby="commentModalCenterTitle"
+        aria-labelledby="fileModalCenterTitle"
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="commentModalLongTitle">
-                  Comment
+              <h5 className="modal-title" id="fileModalLongTitle">
+                    File
               </h5>
               <button
                 type="button"
@@ -37,27 +38,28 @@ export default function CommentModal({ taskId, handleCurrentTask, comment, handl
               </button>
             </div>
             <div className="modal-body">
-              <textarea 
-                className="form-control" 
-                rows="3" 
-                value={comment} 
-                onChange={handleCommentChange}
-                placeholder="Enter your comment"></textarea>
+              <div className="mb-3">
+                <label htmlFor="formFileSm" className="form-label">
+                            Upload your file
+                </label>
+                <input key={inputKey} className="form-control form-control-sm" id="formFileSm" type="file" onChange={handleFileChange}/>
+              </div>
               <div className="modal-footer">
                 <button 
                   type="button" 
                   className="btn btn-outline-success" 
-                  onClick={handleConfirmComment} 
-                  data-bs-dismiss="modal">
-                  Confirm
+                  data-bs-dismiss="modal"
+                  onClick={handleFileUpload}
+                >
+                          Upload
                 </button>
                 <button
                   type="button"
                   className="btn btn-outline-danger"
-                  onClick={handleCancelComment}
                   data-bs-dismiss="modal"
+                  onClick={handleCancelFile}
                 >
-                  Cancel
+                          Cancel
                 </button>
               </div>
             </div>
@@ -65,14 +67,15 @@ export default function CommentModal({ taskId, handleCurrentTask, comment, handl
         </div>
       </div>
     </>
+        
   );
 }
 
-CommentModal.propTypes = {
+FileModal.propTypes = {
   taskId: PropTypes.number.isRequired,
   handleCurrentTask: PropTypes.func.isRequired,
-  comment: PropTypes.string.isRequired,
-  handleCommentChange: PropTypes.func.isRequired,
-  handleConfirmComment: PropTypes.func.isRequired,
-  handleCancelComment: PropTypes.func.isRequired,
+  handleFileChange: PropTypes.func.isRequired,
+  handleFileUpload: PropTypes.func.isRequired,
+  handleCancelFile: PropTypes.func.isRequired,
+  inputKey: PropTypes.number.isRequired,
 };

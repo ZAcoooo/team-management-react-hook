@@ -4,17 +4,17 @@ import TaskCardForMember from "../components/TaskCardForMember";
 import PropTypes from "prop-types";
 
 
-export default function MemberProjectPage({ project }) {
+export default function MemberProjectUncompletedPage({ project }) {
   return (
     <div>
       <MemberProjectNavBar />
       <div className="container mt-4">
-        <TaskCardForMember project={project} status={"all"}/>
+        <TaskCardForMember project={project} status={"uncompleted"}/>
       </div>
     </div>
   );
 }
 
-MemberProjectPage.propTypes = {
+MemberProjectUncompletedPage.propTypes = {
   project: PropTypes.object.isRequired,
 };
