@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 export default function TaskCardForLeader(props) {
-  const tasks = props.project.getTasks();
+  const [project, setProject] = useState(props.project);
+  const tasks = project.getTasks();
+
+  function handleDeleteTask(taskId) {
+    const confirmDelete = window.confirm("Are you sure you want to delete this task?");
+    if (confirmDelete) {
+      const updatedProject = { ...project };
+      updatedProject.deleteTask(taskId);
+      setProject(updatedProject);
+    }
+  };
+
   return (
     <div>
       {tasks.length === 0 ? (
@@ -30,7 +41,8 @@ export default function TaskCardForLeader(props) {
                 <span style={{fontWeight: "bold", color: task.status ? "green" : "red"}}>
                   {task.status ? " Completed" : " Uncompleted"}
                 </span>
-              </p>             
+              </p>  
+              <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger">Delete Task</button>           
             </div>
           </div>
         ))
@@ -42,6 +54,7 @@ export default function TaskCardForLeader(props) {
 TaskCardForLeader.propTypes = {
   project: PropTypes.shape({
     getTasks: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
   }).isRequired,
 };
 

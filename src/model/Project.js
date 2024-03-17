@@ -64,6 +64,15 @@ export default function Project({name = "Test Project",
     return false;
   }
 
+  function deleteTask(taskId) {
+    const index = tasks.findIndex(task => task.id === taskId);
+    if (index !== -1) {
+      tasks.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
   me.getName = getName;
   me.getDescription = getDescription;
   me.getMembers = getMembers;
@@ -72,5 +81,6 @@ export default function Project({name = "Test Project",
   me.getTaskById = getTaskById;
   me.addCommentToTask = addCommentToTask;
   me.markTaskAsCompleted = markTaskAsCompleted;
+  me.deleteTask = deleteTask;
   return me;
 }

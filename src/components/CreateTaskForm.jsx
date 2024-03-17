@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
 export default function CreateTaskForm({ project }) {
   const [formTable, setFormTable] = useState({
@@ -15,7 +16,7 @@ export default function CreateTaskForm({ project }) {
       Jason: false
     }
   });
-
+  const history = useHistory();
   function handleCheckboxChange(event) {
     const { name, checked } = event.target;
     setFormTable((prevFormTable) => ({
@@ -57,6 +58,7 @@ export default function CreateTaskForm({ project }) {
     checkboxes.forEach(checkbox => {
       checkbox.checked = false;
     });
+    history.push("/Leader/Project");
   };
   const { members } = formTable;
 
