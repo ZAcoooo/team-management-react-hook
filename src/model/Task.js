@@ -1,4 +1,4 @@
-export default function Task({id = 1, title, startDate, endDate, description, comments = [], members = []} = {}) {
+export default function Task({id = "", title, startDate, endDate, description, comments = [], members = []} = {}) {
   const me = {};
   me.id = id;
   me.title = title;

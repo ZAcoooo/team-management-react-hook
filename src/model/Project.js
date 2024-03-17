@@ -1,4 +1,5 @@
 import Task from "./Task";
+import Comment from "./Comment";
 
 export default function Project({name = "Test Project", 
   description = "This is description of the first test project", 
@@ -27,7 +28,7 @@ export default function Project({name = "Test Project",
   function createTask(title, startDate, endDate, description, members) {
     tasks.push(
       new Task({
-        id: tasks.length + 1,
+        id: Date.now(),
         title,
         startDate,
         endDate,
@@ -46,8 +47,9 @@ export default function Project({name = "Test Project",
     return tasks.find(task => task.id == id);
   }
 
-  function addCommentToTask(taskId, comment) {
+  function addCommentToTask(taskId, commentData) {
     const task = getTaskById(taskId);
+    const comment = new Comment({ ...commentData, id: commentData.name + commentData.date });
     if (task) {
       task.comments.push(comment);
       return true;
@@ -73,6 +75,16 @@ export default function Project({name = "Test Project",
     return false;
   }
 
+  function deleteCommentFromTask(taskId, commentId) {
+    const task = getTaskById(taskId);
+    const index = task.comments.findIndex(comment => comment.getId() === commentId);
+    if (index !== -1) {
+      task.comments.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
   me.getName = getName;
   me.getDescription = getDescription;
   me.getMembers = getMembers;
@@ -82,5 +94,6 @@ export default function Project({name = "Test Project",
   me.addCommentToTask = addCommentToTask;
   me.markTaskAsCompleted = markTaskAsCompleted;
   me.deleteTask = deleteTask;
+  me.deleteCommentFromTask = deleteCommentFromTask;
   return me;
 }

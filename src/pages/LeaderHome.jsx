@@ -4,8 +4,7 @@ import ProjectCard from "../components/ProjectCard";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-export default function LeaderHome(props) {
-  const { project } = props;
+export default function LeaderHome({ project }) {
   return (
     <div>
       <LeaderHomeNavBar />

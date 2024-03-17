@@ -1,30 +1,23 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateTaskForm({ project }) {
-  const [formTable, setFormTable] = useState({
-    title: "",
-    startDate: "",
-    endDate: "",
-    description: "",
-    members: {
-      Joe: false,
-      Lee: false,
-      Zaco: false,
-      Malcolm: false,
-      Jason: false
-    }
+  const [members, setMembers] = useState({
+    Joe: false,
+    Lee: false,
+    Zaco: false,
+    Malcolm: false,
+    Jason: false
   });
-  const history = useHistory();
+
+  const navigate = useNavigate();
+
   function handleCheckboxChange(event) {
     const { name, checked } = event.target;
-    setFormTable((prevFormTable) => ({
-      ...prevFormTable,
-      members: {
-        ...prevFormTable.members,
-        [name]: checked
-      }
+    setMembers((prevMembers) => ({
+      ...prevMembers,
+      [name]: checked
     }));
   };
 
@@ -35,32 +28,17 @@ export default function CreateTaskForm({ project }) {
     const startDate = formData.get("startDate");
     const endDate = formData.get("endDate");
     const description = formData.get("description");
-    const members = [];
-    
-    for (const pair of formData.entries()) {
-      const [name] = pair;
-      if (name !== "title" && name !== "startDate" && name !== "endDate" && name !== "description") {
-        members.push(name);
+    const selectMembers = [];
+    Object.keys(members).forEach(member => {
+      if (formData.get(member) === "on") {
+        selectMembers.push(member);
       }
-    }
-
-
-    project.createTask(title, startDate, endDate, description, members);
-    // store in the local browser
-    localStorage.setItem("project", JSON.stringify(project));
-
-    // clean the form
-    event.target.querySelector("input[name=title]").value = "";
-    event.target.querySelector("input[name=startDate]").value = "";
-    event.target.querySelector("input[name=endDate]").value = "";
-    event.target.querySelector("textarea[name=description]").value = "";
-    const checkboxes = event.target.querySelectorAll("input[type=checkbox]");
-    checkboxes.forEach(checkbox => {
-      checkbox.checked = false;
     });
-    history.push("/Leader/Project");
+
+    project.createTask(title, startDate, endDate, description, selectMembers);
+    localStorage.setItem("project", JSON.stringify(project));
+    navigate("/Leader/Project");
   };
-  const { members } = formTable;
 
   return (
     <form className="mt-2" action="/" onSubmit={onCreate}>

@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default function ProjectCard(props) {
-  const { project } = props;
+export default function ProjectCard({ project }) {
   return (
     <div className="card">
       <div className="card-body">

@@ -31,8 +31,9 @@ export default function TaskCardForMember(props) {
 
   function handleConfirmComment() {
     if (comment.trim() !== "") {
-      project.addCommentToTask(taskId, comment);
-      setProject(project);
+      const updatedProject = { ...project };
+      updatedProject.addCommentToTask(taskId, {id: "" ,content: comment, name: "Zaco", date: Date.now()});
+      setProject(updatedProject);
     }
     handleCancelComment();
   };
@@ -42,6 +43,15 @@ export default function TaskCardForMember(props) {
     updatedProject.markTaskAsCompleted(id);
     setProject(updatedProject);
   };
+
+  function handleDeleteComment(taskId, commentId) {
+    const confirmed = window.confirm("Are you sure you want to delete this comment?");
+    if (confirmed) {
+      const updatedProject = { ...project };
+      updatedProject.deleteCommentFromTask(taskId, commentId);
+      setProject(updatedProject);
+    }
+  }
 
   return (
     <div>
@@ -62,7 +72,13 @@ export default function TaskCardForMember(props) {
                 <p className="card-text">Comments:</p>
                 <ul>
                   {task.comments.map((comment, index) => (
-                    <li key={index}>{comment}</li>
+                    <li key={index}>
+                      <div>
+                        <strong>{comment.getName()}</strong> - {new Date(comment.getDate()).toLocaleString()}:
+                      </div>
+                      <div>{comment.getContent()}</div>
+                      <button className="btn btn-outline-danger" onClick={() => handleDeleteComment(task.id, comment.getId())}>Delete</button>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -86,8 +102,8 @@ export default function TaskCardForMember(props) {
       >
         <div className="popup">
           <textarea value={comment} onChange={handleCommentChange} />
-          <button onClick={handleConfirmComment}>Confirm</button>
-          <button onClick={handleCancelComment}>Cancel</button>
+          <button className="btn btn-outline-success" onClick={handleConfirmComment}>Confirm</button>
+          <button className="btn btn-outline-danger" onClick={handleCancelComment}>Cancel</button>
         </div>
       </Popup>
     </div>

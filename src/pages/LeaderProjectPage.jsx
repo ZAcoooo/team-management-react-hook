@@ -4,8 +4,7 @@ import TaskCardForLeader from "../components/TaskCardForLeader";
 import PropTypes from "prop-types";
 
 
-export default function LeaderProjectPage(props){
-  const { project } = props;
+export default function LeaderProjectPage({ project }){
   return (
     <div>
       <LeaderProjectNavBar />

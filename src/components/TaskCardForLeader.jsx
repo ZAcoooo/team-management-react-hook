@@ -33,7 +33,12 @@ export default function TaskCardForLeader(props) {
                 <p className="card-text">Comments:</p>
                 <ul>
                   {task.comments.map((comment, index) => (
-                    <li key={index}>{comment}</li>
+                    <li key={index}>
+                      <div>
+                        <strong>{comment.getName()}</strong> - {new Date(comment.getDate()).toLocaleString()}:
+                      </div>
+                      <div>{comment.getContent()}</div>
+                    </li>
                   ))}
                 </ul>
               </div>

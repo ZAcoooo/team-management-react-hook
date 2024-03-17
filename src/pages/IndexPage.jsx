@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./IndexPage.css";
 
-function IndexPage() {
+export default function IndexPage() {
   return (
     <div className='login'>
       <h1 className='login-title'>Login Page</h1>
@@ -12,6 +12,3 @@ function IndexPage() {
   );
       
 }
-
-
-export default IndexPage;

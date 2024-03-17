@@ -4,8 +4,7 @@ import MemberHomeNavBar from "../fragments/MemberHomeNavBar";
 import ProjectCard from "../components/ProjectCard";
 import PropTypes from "prop-types";
 
-export default function MemberHome(props) {
-  const { project } = props;
+export default function MemberHome({ project }) {
   return (
     <div>
       <MemberHomeNavBar />

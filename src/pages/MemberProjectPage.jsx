@@ -4,8 +4,7 @@ import TaskCardForMember from "../components/TaskCardForMember";
 import PropTypes from "prop-types";
 
 
-export default function MemberProjectPage(props) {
-  const { project } = props;
+export default function MemberProjectPage({ project }) {
   return (
     <div>
       <MemberProjectNavBar />
