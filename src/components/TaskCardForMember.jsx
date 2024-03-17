@@ -36,9 +36,12 @@ export default function TaskCardForMember(props) {
   };
 
   function handleMarkCompleted(id) {
-    const updatedProject = { ...project };
-    updatedProject.markTaskAsCompleted(id);
-    setProject(updatedProject);
+    const confirmed = window.confirm("Are you sure you want to mark it as completed?");
+    if (confirmed) {
+      const updatedProject = { ...project };
+      updatedProject.markTaskAsCompleted(id);
+      setProject(updatedProject);
+    }
   };
 
   function handleDeleteComment(taskId, commentId) {
@@ -83,12 +86,12 @@ export default function TaskCardForMember(props) {
                 </ul>
               </div>
               <p className="card-text">Status: 
-                <span style={{fontWeight: "bold", color: task.status ? "green" : "red"}}>
-                  {task.status ? " Completed" : " Uncompleted"}
+                <span style={{fontWeight: "bold", color: task.status.status ? "green" : "red"}}>
+                  {task.status.status ? ` Completed - ${new Date(task.status.date).toLocaleString()}` : " Uncompleted"}
                 </span>
               </p>
               <CommentModal taskId={task.id} handleAddComment={handleAddComment} comment={comment} handleCommentChange={handleCommentChange} handleConfirmComment={handleConfirmComment} handleCancelComment={handleCancelComment} />
-              {!task.status && (
+              {!task.status.status && (
                 <button onClick={() => handleMarkCompleted(task.id)} className="btn btn-success">Mark as Completed</button>
               )}
               

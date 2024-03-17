@@ -7,7 +7,7 @@ export default function Task({id = "", title, startDate, endDate, description, c
   me.description = description;
   me.comments = comments;
   me.members = members;
-  me.status = false;
+  me.status = {status: false, date: null};
   me.files = files;
   return me;
 }

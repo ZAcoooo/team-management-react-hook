@@ -60,7 +60,8 @@ export default function Project({name = "Test Project",
   function markTaskAsCompleted(taskId) {
     const task = getTaskById(taskId);
     if (task) {
-      task.status = true;
+      task.status.status = true;
+      task.status.date = Date.now();
       return true;
     }
     return false;
