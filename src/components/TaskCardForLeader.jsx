@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import CommentList from "./CommentList";
 import FileList from "./FileList";
+import { useNavigate } from "react-router-dom";
 
 
 export default function TaskCardForLeader(props) {
+  const navigate = useNavigate();
   const [project, setProject] = useState(props.project);
   const { status } = props;
   let tasks;
@@ -33,6 +35,10 @@ export default function TaskCardForLeader(props) {
     link.click();
     link.remove();
   }
+  function handleEditClick(taskId) {
+    navigate(`/Leader/Project/EditTask/${taskId}`);
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -58,7 +64,10 @@ export default function TaskCardForLeader(props) {
                     </span>
                   </p>  
                   {!task.status.status && (
-                    <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger">Delete Task</button>           
+                    <>
+                      <button onClick={() => handleEditClick(task.id)} className="btn btn-primary me-2 mb-2">Edit Task</button> 
+                      <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger me-2 mb-2">Delete Task</button>   
+                    </>
                   )}
                 </div>
               </div>

@@ -10,6 +10,7 @@ import MemberProjectPage from "./pages/MemberProjectPage.jsx";
 import MemberProjectCompletedPage from "./pages/MemberProjectCompletedPage.jsx";
 import MemberProjectUncompletedPage from "./pages/MemberProjectUncompletedPage.jsx";
 import CreateTaskPage from "./pages/CreateTaskPage.jsx";
+import EditTaskPage from "./pages/EditTaskPage.jsx";
 import Project from "./model/Project.js";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -17,6 +18,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const globalProject = new Project();
 
 const router = createBrowserRouter([
+  {
+    path: "/Leader/Project/EditTask/:taskId",
+    element: <EditTaskPage project={globalProject}/>,
+  },
   {
     path: "/Leader/Project/CreateTask",
     element: <CreateTaskPage project={globalProject}/>,

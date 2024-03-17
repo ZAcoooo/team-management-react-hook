@@ -113,6 +113,14 @@ export default function Project({name = "Test Project",
     return false;
   }
 
+  function editTask(updatedTask) {
+    if (deleteTask(updatedTask.id)) {
+      tasks.push(updatedTask);
+      return true;
+    }
+    return false;
+  }
+
   me.getName = getName;
   me.getDescription = getDescription;
   me.getMembers = getMembers;
@@ -127,5 +135,6 @@ export default function Project({name = "Test Project",
   me.deleteTask = deleteTask;
   me.deleteFileFromTask = deleteFileFromTask;
   me.deleteCommentFromTask = deleteCommentFromTask;
+  me.editTask = editTask;
   return me;
 }
