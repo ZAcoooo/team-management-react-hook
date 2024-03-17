@@ -6,7 +6,7 @@ export default function FileModal({ taskId, handleCurrentTask, handleFileChange,
     <>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-primary me-2 mb-2"
         data-bs-toggle="modal"
         data-bs-target="#fileModal"
         onClick={() => handleCurrentTask(taskId)}
