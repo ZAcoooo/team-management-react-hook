@@ -12,9 +12,9 @@ export default function Comment({ id, content, name, date } = {}) {
   function getDate() {
     return date;
   }
-  me.getId = getId;
-  me.getContent = getContent;
-  me.getName = getName;
-  me.getDate = getDate;
+  me.id = getId();
+  me.content = getContent();
+  me.name = getName();
+  me.date = getDate();
   return me;
 }

@@ -28,7 +28,7 @@ export default function ProgressBar({ totalUncompletedTasks,  totalTasksInPage, 
 }
 
 ProgressBar.propTypes = {
-  totalUncompletedTasks: PropTypes.number.isRequired,
+  totalUncompletedTasks: PropTypes.number,
   totalTasksInPage: PropTypes.number.isRequired,
   completionPercentage: PropTypes.number.isRequired,
 };

@@ -1,19 +1,25 @@
-import React, {useEffect, useState} from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import CommentModal from "./CommentModal";
 import FileModal from "./FileModal";
 import CommentList from "./CommentList";
 import FileList from "./FileList";
 import ProgressBar from "./ProgressBar";
+import { myFirebase } from "../models/MyFirebase.jsx";
+import Project from "../models/Project.js";
+import {
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 
 export default function TaskCardForMember(props) {
   const [comment, setComment] = useState("");
-  const [file, setFile] = useState(undefined);
-  const [taskId, setTaskId] = useState(null);
+  const [taskId, setTaskId] = useState(0);
   const [project, setProject] = useState(props.project);
   const [inputKey, setInputKey] = useState(0);
   const [sortBy, setSortBy] = useState("id");
+  const [file, setFile] = useState([]);
   const { status } = props;
   let tasks;
   if (status === "all") {
@@ -24,21 +30,28 @@ export default function TaskCardForMember(props) {
     tasks = project.getCompletedTasks();
   }
   useEffect(() => {
-    localStorage.setItem("project", JSON.stringify(project));
-  }, [project]);
+    const getProject = async() => {
+      setProject(new Project((await myFirebase.getProjects())[0]));
+    };
+    getProject();
+  }, []);
+  async function updateDB() {
+    await myFirebase.updateProject(project);
+    setProject(new Project((await myFirebase.getProjects())[0]));
+  }
 
   function handleCurrentTask(id) {
     setInputKey((prevKey) => prevKey + 1);
     setTaskId(id);
   };
 
-  function handleFileChange(event) {
-    setFile(event.target.files[0]);
-  };
-
   function handleCommentChange(event) {
     setComment(event.target.value);
   };
+
+  function handleFileChange(event) {
+    setFile(event.target.files);
+  }
 
   function handleCancelComment() {
     setComment("");
@@ -65,28 +78,10 @@ export default function TaskCardForMember(props) {
       const updatedProject = { ...project };
       updatedProject.addCommentToTask(taskId, {id: "" ,content: comment, name: "Zaco", date: Date.now()});
       setProject(updatedProject);
+      updateDB();
     }
     handleCancelComment();
   };
-
-  function handleFileUpload() {
-    if (file) {
-      const updatedProject = { ...project };
-      updatedProject.uploadFileToTask(taskId, file);
-      setProject(updatedProject);
-    }
-    handleCancelFile();
-  };
-
-  function handleFileDownload(downloadFile) {
-    const downloadUrl = URL.createObjectURL(downloadFile);
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.setAttribute("download", downloadFile.name);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  }
 
   function handleMarkCompleted(id) {
     const confirmed = window.confirm("Are you sure you want to mark it as completed?");
@@ -94,6 +89,7 @@ export default function TaskCardForMember(props) {
       const updatedProject = { ...project };
       updatedProject.markTaskAsCompleted(id);
       setProject(updatedProject);
+      updateDB();
     }
   };
 
@@ -103,19 +99,47 @@ export default function TaskCardForMember(props) {
       const updatedProject = { ...project };
       updatedProject.deleteCommentFromTask(taskId, commentId);
       setProject(updatedProject);
+      updateDB();
     }
   }
-
-  function handleDeleteFile(taskId, file) {
-    const confirmed = window.confirm("Are you sure you want to delete this file?");
-    if (confirmed) {
-      const updatedProject = { ...project };
-      updatedProject.deleteFileFromTask(taskId, file);
-      setProject(updatedProject);
+  async function uploadFile() {
+    if (file == null || file.length === 0) return;
+  
+    try {
+      // Iterate over each file in the array
+      const promises = Array.from(file).map(async (singleFile) => {
+        const fileRef = ref(myFirebase.storage, `${taskId}/${singleFile.name}`);
+        await uploadBytes(fileRef, singleFile);
+      });
+  
+      // Wait for all files to upload before performing cleanup
+      await Promise.all(promises);
+  
+      // Store the scroll position before refreshing the page
+      const scrollPosition = window.scrollY;
+  
+      // Clear the file state and cancel file upload
+      setFile(null);
+      handleCancelFile();
+  
+      // Store the scroll position in localStorage
+      localStorage.setItem("scrollPosition", scrollPosition);
+  
+      // Refresh the page
+      window.location.reload();
+    } catch (error) {
+      console.error("Error uploading files:", error);
     }
   }
-
-
+  
+  
+  useEffect(() => {
+    const storedScrollPosition = localStorage.getItem("scrollPosition");
+    if (storedScrollPosition !== null) {
+      window.scrollTo(0, parseInt(storedScrollPosition));
+      localStorage.removeItem("scrollPosition");
+    }
+  }, []);
 
   const totalTasksInPage = tasks.length;
   const totalUncompletedTasks = status === "all" ? tasks.filter(task => !task.status.status).length : null;
@@ -150,7 +174,7 @@ export default function TaskCardForMember(props) {
                   <p className="card-text">Description: {task.description}</p>
                   <p className="card-text">Assigned Members: {task.members.join(", ")}</p>
                   <CommentList taskId={task.id} comments={task.comments} handleDeleteComment={handleDeleteComment} user={"member"} status={task.status.status}/>
-                  <FileList taskId={task.id} files={task.files} handleDeleteFile={handleDeleteFile} handleFileDownload={handleFileDownload} user={"member"} status={task.status.status}/>
+                  <FileList taskId={task.id} user={"member"} status={task.status.status}/>
                   <p className="card-text">Status: 
                     <span style={{fontWeight: "bold", color: task.status.status ? "green" : "red"}}>
                       {task.status.status ? ` Completed - ${new Date(task.status.date).toLocaleString()}` : " Uncompleted"}
@@ -159,7 +183,7 @@ export default function TaskCardForMember(props) {
                   {!task.status.status && (
                     <>
                       <CommentModal taskId={task.id} handleCurrentTask={handleCurrentTask} comment={comment} handleCommentChange={handleCommentChange} handleConfirmComment={handleConfirmComment} handleCancelComment={handleCancelComment}/>
-                      <FileModal taskId={task.id} handleCurrentTask={handleCurrentTask} handleFileChange={handleFileChange} handleFileUpload={handleFileUpload} handleCancelFile={handleCancelFile} inputKey={inputKey}/>
+                      <FileModal taskId={task.id} handleCurrentTask={handleCurrentTask} handleCancelFile={handleCancelFile} handleFileChange={handleFileChange} uploadFile={uploadFile} inputKey={inputKey}/>
                       <button onClick={() => handleMarkCompleted(task.id)} className="btn btn-success mb-2">Mark as Completed</button>
                     </>
                   )}
@@ -175,10 +199,6 @@ export default function TaskCardForMember(props) {
 }
 
 TaskCardForMember.propTypes = {
-  project: PropTypes.shape({
-    getTasks: PropTypes.func.isRequired,
-    addCommentToTask: PropTypes.func.isRequired,
-    markTaskAsCompleted: PropTypes.func.isRequired,
-  }).isRequired,
+  project: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
 };

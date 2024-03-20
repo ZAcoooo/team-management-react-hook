@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CommentList from "./CommentList";
 import FileList from "./FileList";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
+import { myFirebase } from "../models/MyFirebase.jsx";
+import Project from "../models/Project.js";
+import { ref, deleteObject, listAll } from "firebase/storage";
+
 
 
 export default function TaskCardForLeader(props) {
@@ -20,6 +24,13 @@ export default function TaskCardForLeader(props) {
     tasks = project.getCompletedTasks();
   }
 
+  useEffect(() => {
+    const getProject = async() => {
+      setProject(new Project((await myFirebase.getProjects())[0]));
+    };
+    getProject();
+  }, []);
+
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
@@ -30,23 +41,24 @@ export default function TaskCardForLeader(props) {
     tasks.sort((a, b) => a.id - b.id);
   }
 
-  function handleDeleteTask(taskId) {
+  async function handleDeleteTask(taskId) {
     const confirmDelete = window.confirm("Are you sure you want to delete this task?");
     if (confirmDelete) {
       const updatedProject = { ...project };
       updatedProject.deleteTask(taskId);
       setProject(updatedProject);
+      await myFirebase.updateProject(project);
+      const fileListRef = ref(myFirebase.storage, `${taskId}/`);
+      try {
+        const fileList = await listAll(fileListRef);
+        fileList.items.map(async (fileRef) => {
+          await deleteObject(fileRef);
+        });
+      } catch (error) {
+        console.error("Error deleting files:", error);
+      }
     }
   };
-  function handleFileDownload(downloadFile) {
-    const downloadUrl = URL.createObjectURL(downloadFile);
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.setAttribute("download", downloadFile.name);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  }
   function handleEditClick(taskId) {
     navigate(`/Leader/Project/EditTask/${taskId}`);
   }
@@ -84,7 +96,7 @@ export default function TaskCardForLeader(props) {
                   <p className="card-text">Description: {task.description}</p>
                   <p className="card-text">Assigned Members: {task.members.join(", ")}</p>
                   <CommentList comments={task.comments} />
-                  <FileList files={task.files} handleFileDownload={handleFileDownload}/>
+                  <FileList taskId={task.id}/>
                   <p className="card-text">Status: 
                     <span style={{fontWeight: "bold", color: task.status.status ? "green" : "red"}}>
                       {task.status.status ? ` Completed - ${new Date(task.status.date).toLocaleString()}` : " Uncompleted"}

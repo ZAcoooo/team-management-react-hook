@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { myFirebase } from "../models/MyFirebase.jsx";
+
+
 
 export default function EditTaskForm({ taskId, project }) {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ export default function EditTaskForm({ taskId, project }) {
     }));
   };
     
-  function update(event) {
+  async function update(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const selectMembers = [];
@@ -46,7 +49,7 @@ export default function EditTaskForm({ taskId, project }) {
     updateTaskForm.description = formData.get("description");
     updateTaskForm.members = selectMembers;
     project.editTask(updateTaskForm);
-    localStorage.setItem("project", JSON.stringify(project));
+    await myFirebase.updateProject(project);
     navigate("/Leader/Project");
   };
   return (

@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MemberProjectNavBar from "../fragments/MemberProjectNavBar";
 import TaskCardForMember from "../components/TaskCardForMember";
-import PropTypes from "prop-types";
+import { myFirebase } from "../models/MyFirebase.jsx";
+import Project from "../models/Project.js";
 
+export default function MemberProjectUncompletedPage() {
+  const [project, setProject] = useState(null);
 
-export default function MemberProjectUncompletedPage({ project }) {
+  useEffect(() => {
+    const getProject = async() => {
+      setProject(new Project((await myFirebase.getProjects())[0]));
+    };
+    getProject();
+  }, []);
   return (
     <div>
       <MemberProjectNavBar />
       <div className="container mt-4">
-        <TaskCardForMember project={project} status={"uncompleted"}/>
+        {project && (
+          <TaskCardForMember project={project} status={"uncompleted"}/>
+        )}
+        {!project && <p>Loading tasks...</p>}
       </div>
     </div>
   );
 }
 
-MemberProjectUncompletedPage.propTypes = {
-  project: PropTypes.object.isRequired,
-};
+

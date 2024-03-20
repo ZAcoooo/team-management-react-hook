@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { myFirebase } from "../models/MyFirebase.jsx";
+import Project from "../models/Project.js";
+
 
 export default function CreateTaskForm({ project }) {
+
   const [members, setMembers] = useState({
     Joe: false,
     Lee: false,
@@ -21,7 +25,7 @@ export default function CreateTaskForm({ project }) {
     }));
   };
 
-  function onCreate(event) {
+  async function onCreate(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const title = formData.get("title");
@@ -34,9 +38,9 @@ export default function CreateTaskForm({ project }) {
         selectMembers.push(member);
       }
     });
-
+    project = new Project((await myFirebase.getProjects())[0]);
     project.createTask(title, startDate, endDate, description, selectMembers);
-    localStorage.setItem("project", JSON.stringify(project));
+    await myFirebase.updateProject(project);
     navigate("/Leader/Project");
   };
 

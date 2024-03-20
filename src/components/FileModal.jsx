@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default function FileModal({ taskId, handleCurrentTask, handleFileChange, handleFileUpload, handleCancelFile, inputKey }) {
+
+export default function FileModal({ taskId, handleCurrentTask, handleCancelFile, handleFileChange, uploadFile, inputKey }) {
   return (
     <>
       <button
@@ -42,14 +43,15 @@ export default function FileModal({ taskId, handleCurrentTask, handleFileChange,
                 <label htmlFor="formFileSm" className="form-label">
                             Upload your file
                 </label>
-                <input key={inputKey} className="form-control form-control-sm" id="formFileSm" type="file" onChange={handleFileChange}/>
+                <input key={inputKey} className="form-control form-control-sm" id="formFileSm" type="file" multiple
+                  onChange={handleFileChange}/>
               </div>
               <div className="modal-footer">
                 <button 
                   type="button" 
                   className="btn btn-outline-success" 
                   data-bs-dismiss="modal"
-                  onClick={handleFileUpload}
+                  onClick={uploadFile}
                 >
                           Upload
                 </button>
@@ -75,7 +77,7 @@ FileModal.propTypes = {
   taskId: PropTypes.number.isRequired,
   handleCurrentTask: PropTypes.func.isRequired,
   handleFileChange: PropTypes.func.isRequired,
-  handleFileUpload: PropTypes.func.isRequired,
   handleCancelFile: PropTypes.func.isRequired,
+  uploadFile: PropTypes.func.isRequired,
   inputKey: PropTypes.number.isRequired,
 };

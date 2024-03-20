@@ -1,7 +1,7 @@
 import Task from "./Task";
 import Comment from "./Comment";
 
-export default function Project({name = "Test Project", 
+export default function Project({id = 1, title = "Test Project", 
   description = "This is description of the first test project", 
   tasks = [], 
   members = [
@@ -13,8 +13,12 @@ export default function Project({name = "Test Project",
 
   const me = {};
 
-  function getName() {
-    return name;
+  function getId() {
+    return id;
+  }
+
+  function getTitle() {
+    return title;
   }
 
   function getDescription() {
@@ -95,7 +99,7 @@ export default function Project({name = "Test Project",
 
   function deleteCommentFromTask(taskId, commentId) {
     const task = getTaskById(taskId);
-    const index = task.comments.findIndex(comment => comment.getId() === commentId);
+    const index = task.comments.findIndex(comment => comment.id === commentId);
     if (index !== -1) {
       task.comments.splice(index, 1);
       return true;
@@ -120,8 +124,13 @@ export default function Project({name = "Test Project",
     }
     return false;
   }
-
-  me.getName = getName;
+  me.id = id;
+  me.title = title;
+  me.description = description;
+  me.tasks = tasks;
+  me.members = members;
+  me.getId = getId;
+  me.getTitle = getTitle;
   me.getDescription = getDescription;
   me.getMembers = getMembers;
   me.createTask = createTask;

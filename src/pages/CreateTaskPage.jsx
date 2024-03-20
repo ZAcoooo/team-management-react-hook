@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LeaderProjectNavBar from "../fragments/LeaderProjectNavBar";
 import CreateTaskForm from "../components/CreateTaskForm";
-import PropTypes from "prop-types";
+import { myFirebase } from "../models/MyFirebase.jsx";
+import Project from "../models/Project.js";
 
-export default function CreateTaskPage({ project }) {
+export default function CreateTaskPage() {
+  const [project, setProject] = useState(null);
+
+  useEffect(() => {
+    const getProject = async() => {
+      setProject(new Project((await myFirebase.getProjects())[0]));
+    };
+    getProject();
+  }, []);
   return (
     <div>
       <LeaderProjectNavBar />
-      <CreateTaskForm project={project}/>
+      {project && (
+        <CreateTaskForm project={project}/>        
+      )}
+      {!project && <p>Loading tasks...</p>}
     </div>
   );
 }
-
-CreateTaskPage.propTypes = {
-  project: PropTypes.object.isRequired,
-};

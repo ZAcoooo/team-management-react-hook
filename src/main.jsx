@@ -11,52 +11,50 @@ import MemberProjectCompletedPage from "./pages/MemberProjectCompletedPage.jsx";
 import MemberProjectUncompletedPage from "./pages/MemberProjectUncompletedPage.jsx";
 import CreateTaskPage from "./pages/CreateTaskPage.jsx";
 import EditTaskPage from "./pages/EditTaskPage.jsx";
-import Project from "./model/Project.js";
-
+// import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-const globalProject = new Project();
 
 const router = createBrowserRouter([
   {
     path: "/Leader/Project/EditTask/:taskId",
-    element: <EditTaskPage project={globalProject}/>,
+    element: <EditTaskPage />,
   },
   {
     path: "/Leader/Project/CreateTask",
-    element: <CreateTaskPage project={globalProject}/>,
+    element: <CreateTaskPage />,
   },
   {
     path: "/Leader/Project/Uncompleted",
-    element: <LeaderProjectUncompletedPage project={globalProject}/>,
+    element: <LeaderProjectUncompletedPage />,
   },
   {
     path: "/Leader/Project/Completed",
-    element: <LeaderProjectCompletedPage project={globalProject}/>,
+    element: <LeaderProjectCompletedPage />,
   },
   {
     path: "/Leader/Project",
-    element: <LeaderProjectPage project={globalProject}/>,
+    element: <LeaderProjectPage />,
   },
   {
     path: "/Leader",
-    element: <LeaderHome project={globalProject}/>,
+    element: <LeaderHome />,
   },
   {
     path: "/Member/Project/Uncompleted",
-    element: <MemberProjectUncompletedPage project={globalProject}/>,
+    element: <MemberProjectUncompletedPage />,
   },
   {
     path: "/Member/Project/Completed",
-    element: <MemberProjectCompletedPage project={globalProject}/>,
+    element: <MemberProjectCompletedPage />,
   },
   {
     path: "/Member/Project",
-    element: <MemberProjectPage project={globalProject}/>,
+    element: <MemberProjectPage />,
   },
   {
     path: "/Member",
-    element: <MemberHome project={globalProject}/>,
+    element: <MemberHome />,
   },
   {
     path: "/",
@@ -67,5 +65,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
+    {/* <App /> */}
   </React.StrictMode>
 );

@@ -12,13 +12,13 @@ export default function CommentList({ taskId, comments, handleDeleteComment, use
           {comments.map((comment, index) => (
             <li key={index} className="list-group-item">
               <div>
-                <strong>{comment.getName()}</strong> - {new Date(comment.getDate()).toLocaleString()}:
+                <strong>{comment.name}</strong> - {new Date(comment.date).toLocaleString()}:
               </div>
               <div style={{ whiteSpace: "pre-line" }}>
-                {comment.getContent()}
+                {comment.content}
               </div>
               {user === "member" && !status && (
-                <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteComment(taskId, comment.getId())}>
+                <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteComment(taskId, comment.id)}>
                 Delete
                 </button>
               )}          
@@ -32,13 +32,7 @@ export default function CommentList({ taskId, comments, handleDeleteComment, use
   
 CommentList.propTypes = {
   taskId: PropTypes.number,
-  comments: PropTypes.arrayOf(
-    PropTypes.shape({
-      getName: PropTypes.func.isRequired,
-      getDate: PropTypes.func.isRequired,
-      getContent: PropTypes.func.isRequired
-    })
-  ).isRequired,
+  comments: PropTypes.array.isRequired,
   handleDeleteComment: PropTypes.func,
   user: PropTypes.string,
   status: PropTypes.bool,
