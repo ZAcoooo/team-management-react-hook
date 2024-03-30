@@ -24,7 +24,8 @@ Team Project Management React App is a comprehensive web application built using
 ### Testing Steps
 To run Team Project Management React App tests, you can follow these steps:
 1. Clone the github repository to your local.
-```git clone https://github.com/ZAcoooo/team-management-react-hook.git```
+```git clone -b cypress_test https://github.com/ZAcoooo/team-management-react-hook.git``` and 
+```cd team-management-react-hook```
 2. Install required node modules:
 ```npm install```
 3. Running the application:
