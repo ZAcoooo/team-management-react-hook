@@ -64,7 +64,7 @@ export default function FileList({ taskId, user = "", status = false } = {}) {
               </a>
               {user === "member" && !status && (
                 <button
-                  className="btn btn-outline-danger btn-sm bs-4"
+                  className="file-delete btn btn-outline-danger btn-sm bs-4"
                   onClick={() => deleteFile(taskId, file)}
                 >
                   x

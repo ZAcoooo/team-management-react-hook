@@ -18,7 +18,7 @@ export default function CommentList({ taskId, comments, handleDeleteComment, use
                 {comment.content}
               </div>
               {user === "member" && !status && (
-                <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteComment(taskId, comment.id)}>
+                <button className="comment-delete btn btn-outline-danger btn-sm" onClick={() => handleDeleteComment(taskId, comment.id)}>
                 Delete
                 </button>
               )}          
