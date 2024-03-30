@@ -5,6 +5,26 @@ Team Project Management React App is a comprehensive web application built using
 
 **Project demo video URL: https://www.youtube.com/watch?v=bQCIAiV_JPA**
 
+## Testing Steps
+To run Team Project Management React App tests, you can follow these steps:
+1. Clone the github repository to your local.
+```git clone https://github.com/ZAcoooo/team-management-react-hook.git```
+2. Install required node modules:
+```npm install```
+3. Running the application:
+```npm run dev```
+4. In another terminal, open the cypress studio:
+```npx cypress open```
+5. Choose E2E Testing
+6. Start E2E Testing in Electron
+7. In Specs, click the file ```cypress/e2e/0-team-management/team-management.cy.js```
+8. Run the test files by the order of the number in the folder name.
+   1. team-management.cy.js
+   2. createTask.cy.js
+   3. editTask.cy.js
+   4. addComment.cy.js
+   5. deleteComment.cy.js
+   6. deleteTask.cy.js
 
 ## Design Document
 [Design Document](https://github.com/ZAcoooo/team-management-react-hook/blob/main/design/Project-2-Design.pdf)
@@ -26,7 +46,7 @@ Team Project Management React App is a comprehensive web application built using
 
 ## Getting Started
 **Recommend using project deploy hosting url: https://team-management-vite-hook.web.app/** <br>
-(**Notice that you should build your own firebase db if you want to run the project locally**) To run Team Project Management React App locally, you can follow these steps:
+To run Team Project Management React App locally, you can follow these steps:
 1. Clone the github repository to your local.
 ```git clone https://github.com/ZAcoooo/team-management-react-hook.git``
 2. Install required node modules:
