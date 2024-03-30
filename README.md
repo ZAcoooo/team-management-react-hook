@@ -5,7 +5,23 @@ Team Project Management React App is a comprehensive web application built using
 
 **Project demo video URL: https://www.youtube.com/watch?v=bQCIAiV_JPA**
 
-## Testing Steps
+## Testing
+
+### Use Cases
+1. team-management:
+   - This test verifies the Team Management Application loads properly
+2. createTask:
+   - This test verifies the functionality of creating a new task by a leader. It ensures that the user interface for adding a new task is functioning correctly and that the task is successfully created and displayed in the project.
+3. editTask:
+   - This test validates the capability of a leader to edit an existing task. It ensures that the user interface for editing a task is functional and that the changes made to the task's details are accurately reflected in the project after editing.
+4. addComment:
+   - This test checks the functionality of adding a comment to a task by a member. It ensures that the user interface for adding comments is working properly and that the comment is successfully added to the task's details.
+5. deleteComment:
+   - This test verifies the ability to delete a comment from a task by a member or leader. It ensures that the user interface for deleting comments functions correctly and that the comment is removed from the task's details after deletion.
+6. deleteTask:
+   - This test validates the functionality of deleting a task by a leader. It ensures that the user interface for deleting tasks operates as expected and that the task is removed from the project after deletion.
+
+### Testing Steps
 To run Team Project Management React App tests, you can follow these steps:
 1. Clone the github repository to your local.
 ```git clone https://github.com/ZAcoooo/team-management-react-hook.git```
