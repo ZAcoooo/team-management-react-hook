@@ -2,6 +2,7 @@
 Team Project Management React App is a comprehensive web application built using React.js, designed to streamline project management for teams. With its user-friendly interface and powerful features, Team Project Management React App enhances productivity and coordination within project teams, ensuring smooth and efficient project execution.
 
 **Project deploy hosting URL: https://team-management-vite-hook.web.app/**
+Something wrong with the database? The page keeps showing `loading project`.
 
 **Project demo video URL: https://www.youtube.com/watch?v=bQCIAiV_JPA**
 
