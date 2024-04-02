@@ -7,6 +7,8 @@ Team Project Management React App is a comprehensive web application built using
 
 ## Testing
 
+**Testing video URL: https://www.youtube.com/watch?v=iApstCROCng**
+
 ### Use Cases
 1. team-management:
    - This test verifies the Team Management Application loads properly
